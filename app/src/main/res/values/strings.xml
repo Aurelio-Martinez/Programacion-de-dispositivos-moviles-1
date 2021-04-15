@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AppCall</string>
+    <string name="sign_in_with_google">Entrar</string>ç
+    <string name="ficha_numero">ficha de un contacto</string>
+    <string name="name">Nombre</string>
+    <string name="numero">Numero</string>
+</resources>
