@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapterContacto = new AdapterContacto(mContactos);
         mRecyclerView.setAdapter(mAdapterContacto);
-
         Content();
     }
 
