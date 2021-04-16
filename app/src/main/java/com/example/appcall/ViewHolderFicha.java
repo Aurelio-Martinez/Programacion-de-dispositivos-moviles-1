@@ -10,21 +10,19 @@ import com.squareup.picasso.Picasso;
 
 
 // ViewHolder Personalizado para las fichas telefonicas incluyendo numero nombre y foto;
-public class ViewHolder extends RecyclerView.ViewHolder {
+public class ViewHolderFicha extends RecyclerView.ViewHolder {
 
     public ImageView foto;
     public TextView numero;
     public TextView nombre;
 
-    public ViewHolder(View itemView) {
+    public ViewHolderFicha(View itemView) {
         super(itemView);
         nombre=itemView.findViewById(R.id.Nombre);
         numero=itemView.findViewById(R.id.Numero);
         foto=itemView.findViewById(R.id.Foto);
     }
     public void onBind( Contacto mContacto) {
-
-
 
         if (mContacto.getNombre() != null) {
             nombre.setText(mContacto.getNombre());

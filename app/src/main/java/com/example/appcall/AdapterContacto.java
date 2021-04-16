@@ -15,7 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-public class AdapterContacto extends RecyclerView.Adapter<ViewHolder> {
+public class AdapterContacto extends RecyclerView.Adapter<ViewHolderFicha> {
 
     // lista de clase Contacto
     private final List<Contacto> mcontactos;
@@ -48,9 +48,9 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolder> {
     // onCreateViewHolder --> funcion que devuelve una vista del elemento personalizado ViewHolder
     @NonNull
     @Override
-    public  com.example.appcall.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public  com.example.appcall.ViewHolderFicha onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_content, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolderFicha(view);
     }
 
 
@@ -58,7 +58,7 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolder> {
     // contactos llama al onBind del holder para incluir la informacion y le crea el intent
     // de llamada al numero respectivo a la posicion de la lista de contactos
     @Override
-    public void onBindViewHolder(@NonNull com.example.appcall.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull com.example.appcall.ViewHolderFicha holder, int position) {
 
         Contacto mContacto= mcontactos.get(position);
         holder.onBind(mContacto);
@@ -79,11 +79,8 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        if (mcontactos != null & mcontactos.size() > 0) {
-            return mcontactos.size();
-        } else {
-            return 0;
-        }
+        assert mcontactos != null;
+        return Math.max(mcontactos.size(), 0);
     }
 
  }
