@@ -9,23 +9,18 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 public class AdapterContacto extends RecyclerView.Adapter<ViewHolder> {
 
-
+    // lista de clase Contacto
     private final List<Contacto> mcontactos;
 
+    // Constructor con lista Contacto
     public AdapterContacto(List<Contacto> contactos) {
         mcontactos = contactos;
     }
@@ -47,6 +42,10 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolder> {
         notifyDataSetChanged();
     }  */
 
+
+    //Implements de la RecyclerView.Adapter<ViewHolder> necesarios al extenderla
+
+    // onCreateViewHolder --> funcion que devuelve una vista del elemento personalizado ViewHolder
     @NonNull
     @Override
     public  com.example.appcall.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,17 +53,22 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolder> {
         return new ViewHolder(view);
     }
 
+
+    // onBindViewHolder --> funcion pasado un holder personalizado y una posicion de la lista de
+    // contactos llama al onBind del holder para incluir la informacion y le crea el intent
+    // de llamada al numero respectivo a la posicion de la lista de contactos
     @Override
     public void onBindViewHolder(@NonNull com.example.appcall.ViewHolder holder, int position) {
-        holder.onBind(position);
 
-        Contacto ficha = this.mcontactos.get(position);
-        String numero = ficha.getNumero();
+        Contacto mContacto= mcontactos.get(position);
+        holder.onBind(mContacto);
+        String numero = mContacto.getNumero();
         holder.itemView.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(Intent.ACTION_CALL,  Uri.parse("tel:" +numero));
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(context, "permission not granted", Toast.LENGTH_SHORT).show();
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(context, "permiso denegado", Toast.LENGTH_SHORT).show();
                 ActivityCompat.requestPermissions((Activity) v.getContext(),
                         new String[]{Manifest.permission.CALL_PHONE},143);
             }else{
@@ -72,8 +76,6 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolder> {
             }
         });
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -84,65 +86,4 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolder> {
         }
     }
 
-    public class ViewHolder extends com.example.appcall.ViewHolder {
-
-        ImageView foto;
-        TextView numero;
-        TextView nombre;
-
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            nombre=itemView.findViewById(R.id.Nombre);
-            numero=itemView.findViewById(R.id.Numero);
-            foto=itemView.findViewById(R.id.Foto);
-        }
-
-        protected void clear() {
-            foto.setImageDrawable(null);
-            nombre.setText("");
-            numero.setText("");
-        }
-
-        public void onBind(int position) {
-            super.onBind(position);
-
-            Contacto mContacto= mcontactos.get(position);
-
-
-            if (mContacto.getNombre() != null) {
-                nombre.setText(mContacto.getNombre());
-            }
-
-            if (mContacto.getNumero() != null) {
-                numero.setText(String.valueOf(mContacto.getNumero()));
-            }
-
-            Picasso.get()
-                    .load(mContacto.getUrl())
-                    .placeholder(R.mipmap.ic_launcher_round)
-                   // .resize(128,128)
-                    .error(R.mipmap.ic_launcher_round)
-                    .into(foto);
-
-            //if (mContacto.getUrl()==0){
-          //  foto.setImageResource(R.mipmap.ic_launcher_round);}
-
-            itemView.setOnClickListener(v -> {
-             /*   Intent call = new Intent(Intent.ACTION_CALL);
-
-                call.setData(Uri.parse("tel:"+ numero.getText().toString()));
-                if(ActivityCompat.checkSelfPermission(v.getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.CALL_PHONE},REQUEST_CALL);
-                }
-                else
-                {
-                    startActivity(call);
-                }*/
-
-                Toast.makeText( itemView.getContext(), "Llamando", Toast.LENGTH_SHORT).show();
-                
-            });
-        }
-    }
-}
+ }

@@ -2,10 +2,17 @@ package com.example.appcall;
 
 import androidx.annotation.NonNull;
 
+
+// clase personalizada de contacto
 public class Contacto {
 
+    //url de la foto
     public String url;
+
+    //nombre del usuario
     public String nombre;
+
+    //numero de telefono
     private String numero;
 
 
