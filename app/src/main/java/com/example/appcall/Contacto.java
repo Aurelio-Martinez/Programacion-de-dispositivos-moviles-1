@@ -30,7 +30,7 @@ public class Contacto {
     public Contacto(String nombre, String numero) {
         this.nombre = nombre;
         this.numero = numero;
-        this.url="";
+        this.url="0";
     }
     public Contacto(String nombre, String numero, String url) {
         this.nombre = nombre;

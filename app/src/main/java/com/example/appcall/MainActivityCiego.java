@@ -6,10 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,13 +18,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityCiego extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-    LinearLayoutManager mLayoutManager;
-
-    RecyclerView mRecyclerView;
-    AdapterContacto mAdapterContacto;
+    ViewPager2 myViewPager2;
+    AdapterContactoCiego mAdapterContactoCiego;
     private ArrayList<Contacto> mContactos;
     FirebaseUser user;
 
@@ -35,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_ciego);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         mContactos = new ArrayList<>();
@@ -43,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
             startActivity(intent);
         }
-        mRecyclerView= findViewById(R.id.contactoRecyclerView);
+        myViewPager2 = findViewById(R.id.view_pager);
         mDatabase = FirebaseDatabase.getInstance("https://appcall-default-rtdb.europe-west1.firebasedatabase.app").getReference("subusers/"+user.getUid()+"/contactos");
     }
 
@@ -55,11 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void Recycler() {
 
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapterContacto = new AdapterContacto(mContactos);
-        mRecyclerView.setAdapter(mAdapterContacto);
+        mAdapterContactoCiego= new AdapterContactoCiego(mContactos);
+        myViewPager2.setAdapter(mAdapterContactoCiego);
         Content();
     }
 
@@ -68,12 +60,13 @@ public class MainActivity extends AppCompatActivity {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 mContactos.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Contacto contacto = new Contacto( (String)postSnapshot.child("nombre").getValue() , String.valueOf(postSnapshot.child("numero").getValue()), (String) postSnapshot.child("url").getValue()  );
                     mContactos.add(contacto);
                 }
-                mAdapterContacto.notifyDataSetChanged();
+                mAdapterContactoCiego.notifyDataSetChanged();
 
             }
 
@@ -87,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }
-                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivityCiego.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         });

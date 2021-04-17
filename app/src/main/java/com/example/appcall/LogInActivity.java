@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -19,6 +20,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class LogInActivity extends AppCompatActivity {
@@ -35,8 +41,25 @@ public class LogInActivity extends AppCompatActivity {
 
         FirebaseUser user = mAuth.getCurrentUser();
         if(user!=null){
-            Intent intent = new Intent(this,MainActivity.class);
-            startActivity(intent);
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://appcall-default-rtdb.europe-west1.firebasedatabase.app").getReference("subusers/"+mAuth.getUid()+"/ciego");
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Intent intent;
+                    if(dataSnapshot.getValue().toString().equals("si")){
+                        intent = new Intent(LogInActivity.this, MainActivityCiego.class);
+                    }else{
+                        intent = new Intent(LogInActivity.this, MainActivity.class);
+                    }
+                    startActivity(intent);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Intent intent = new Intent(LogInActivity.this,MainActivity.class);
+                    startActivity(intent);
+                }
+
+            });
         }
 
     }
@@ -111,8 +134,26 @@ public class LogInActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, (OnCompleteListener<com.google.firebase.auth.AuthResult>) task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        Intent intent = new Intent(LogInActivity.this,MainActivity.class);
-                        startActivity(intent);
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://appcall-default-rtdb.europe-west1.firebasedatabase.app").getReference("subusers/"+mAuth.getUid()+"/ciego");
+                        mDatabase.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Intent intent;
+                                if(dataSnapshot.getValue().toString().equals("si")){
+                                    intent = new Intent(LogInActivity.this, MainActivityCiego.class);
+                                }else{
+                                    intent = new Intent(LogInActivity.this, MainActivity.class);
+                                }
+                                startActivity(intent);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Intent intent = new Intent(LogInActivity.this,MainActivity.class);
+                                startActivity(intent);
+                            }
+
+                        });
+
                     } else {
                         Toast.makeText( LogInActivity.this, "Sorry auth failed.", Toast.LENGTH_SHORT).show();
 

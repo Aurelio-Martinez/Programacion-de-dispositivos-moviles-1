@@ -1,4 +1,4 @@
- package com.example.appcall;
+package com.example.appcall;
 
 import android.Manifest;
 import android.app.Activity;
@@ -15,13 +15,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-public class AdapterContacto extends RecyclerView.Adapter<ViewHolderFicha> {
+public class AdapterContactoCiego extends RecyclerView.Adapter<ViewHolderFicha> {
 
     // lista de clase Contacto
     private final List<Contacto> mcontactos;
 
     // Constructor con lista Contacto
-    public AdapterContacto(List<Contacto> contactos) {
+    public AdapterContactoCiego(List<Contacto> contactos) {
         mcontactos = contactos;
     }
 
@@ -49,7 +49,7 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolderFicha> {
     @NonNull
     @Override
     public  com.example.appcall.ViewHolderFicha onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_content, parent, false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.page_content, parent, false);
         return new ViewHolderFicha(view);
     }
 
@@ -61,7 +61,7 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolderFicha> {
     public void onBindViewHolder(@NonNull com.example.appcall.ViewHolderFicha holder, int position) {
 
         Contacto mContacto= mcontactos.get(position);
-        holder.onBind(mContacto);
+        //holder.onBind(mContacto);
         String numero = mContacto.getNumero();
         holder.itemView.setOnClickListener(v -> {
             Context context = v.getContext();
@@ -82,4 +82,4 @@ public class AdapterContacto extends RecyclerView.Adapter<ViewHolderFicha> {
         assert mcontactos != null;
         return Math.max(mcontactos.size(), 0);
     }
- }
+}
