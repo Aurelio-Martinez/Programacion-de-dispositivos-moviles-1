@@ -2,10 +2,11 @@ package com.example.appcall;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.speech.tts.TextToSpeech;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,11 +17,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
-public class MainActivityCiego extends AppCompatActivity {
+public class MainActivityCiego extends AppCompatActivity   {
 
     private DatabaseReference mDatabase;
+     TextToSpeech tts;
     ViewPager2 myViewPager2;
     AdapterContactoCiego mAdapterContactoCiego;
     private ArrayList<Contacto> mContactos;
@@ -29,6 +32,12 @@ public class MainActivityCiego extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        tts= new TextToSpeech(this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                tts.setLanguage(new Locale("es", "ES"));
+            }
+        });
 
         setContentView(R.layout.activity_main_ciego);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -50,8 +59,15 @@ public class MainActivityCiego extends AppCompatActivity {
 
     public void Recycler() {
 
-        mAdapterContactoCiego= new AdapterContactoCiego(mContactos);
+        mAdapterContactoCiego= new AdapterContactoCiego(mContactos, tts);
         myViewPager2.setAdapter(mAdapterContactoCiego);
+        myViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mAdapterContactoCiego.ttsContacto(position);
+            }
+        });
         Content();
     }
 
@@ -76,13 +92,12 @@ public class MainActivityCiego extends AppCompatActivity {
                     for (int i=0; i<9; i++) {
                         Contacto contacto = new Contacto("ejemplo"+i , "000000000000" );
                         mContactos.add(contacto);
-                        Log.d("datos",  mContactos.toString() );
-
                     }
                 }
-                Toast.makeText(MainActivityCiego.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivityCiego.this,"Contactos de ejemplo", Toast.LENGTH_SHORT).show();
             }
 
         });
     }
+
 }
