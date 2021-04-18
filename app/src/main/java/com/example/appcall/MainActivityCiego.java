@@ -82,6 +82,7 @@ public class MainActivityCiego extends AppCompatActivity   {
                     Contacto contacto = new Contacto( (String)postSnapshot.child("nombre").getValue() , String.valueOf(postSnapshot.child("numero").getValue()), (String) postSnapshot.child("url").getValue()  );
                     mContactos.add(contacto);
                 }
+                mAdapterContactoCiego.ttsContacto(0);
                 mAdapterContactoCiego.notifyDataSetChanged();
 
             }

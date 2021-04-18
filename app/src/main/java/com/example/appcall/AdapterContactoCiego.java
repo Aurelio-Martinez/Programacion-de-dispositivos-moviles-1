@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.speech.tts.TextToSpeech;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,9 +82,6 @@ public class AdapterContactoCiego extends RecyclerView.Adapter<ViewHolderFicha> 
         Contacto mContacto= mcontactos.get(position);
         holder.onBind(mContacto);
         String numero = mContacto.getNumero();
-        if ( mcontactos.get(0) == mContacto ){
-            ttsContacto(position);
-        }
         holder.itemView.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(Intent.ACTION_CALL,  Uri.parse("tel:" +numero));
