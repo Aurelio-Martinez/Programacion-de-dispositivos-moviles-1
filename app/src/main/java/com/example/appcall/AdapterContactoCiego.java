@@ -70,7 +70,7 @@ public class AdapterContactoCiego extends RecyclerView.Adapter<ViewHolderFicha> 
 
     public void ttsContacto (int pos)  {
         mtts.stop();
-        mtts.speak("contacto:" + mcontactos.get(pos).getNombre() +"numero: " +  deletrea(mcontactos.get(pos).getNumero()),1,null,null);
+        mtts.speak("contacto:" + mcontactos.get(pos).getNombre() +"\nnumero: " +  deletrea(mcontactos.get(pos).getNumero()),1,null,null);
     }
 
 
@@ -83,6 +83,9 @@ public class AdapterContactoCiego extends RecyclerView.Adapter<ViewHolderFicha> 
         Contacto mContacto= mcontactos.get(position);
         holder.onBind(mContacto);
         String numero = mContacto.getNumero();
+        if ( mcontactos.get(0) == mContacto ){
+            ttsContacto(position);
+        }
         holder.itemView.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(Intent.ACTION_CALL,  Uri.parse("tel:" +numero));
