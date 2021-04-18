@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,14 +63,14 @@ public class AdapterContactoCiego extends RecyclerView.Adapter<ViewHolderFicha> 
     public String deletrea (String a){
         StringBuilder resp= new StringBuilder();
         for ( int b=0; b<a.length();  b++){
-            resp.append(" ").append(a);
+            resp.append(" ").append(a.charAt(b));
         }
         return resp.toString();
     }
 
     public void ttsContacto (int pos)  {
         mtts.stop();
-        mtts.speak("contacto:" + mcontactos.get(pos).getNombre() +"numero: " + deletrea( mcontactos.get(pos).getNumero()),1,null,null);
+        mtts.speak("contacto:" + mcontactos.get(pos).getNombre() +"numero: " +  deletrea(mcontactos.get(pos).getNumero()),1,null,null);
     }
 
 
